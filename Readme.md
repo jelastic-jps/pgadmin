@@ -5,7 +5,7 @@
 ### The most popular and feature-rich Open Source administration and development platform for PostgreSQL.
 
 **pgAdmin4** is an open source administration and development platform for PostgreSQL and its related database management systems. The platform is written in Python and jQuery and supports all PostgreSQL features. You can use pgAdmin for any operation, from writing basic SQL queries to monitoring your databases and setting up advanced database architectures.
- 
+
 ## pgAdmin4 Deployment to the Cloud
 
 Get your Jelastic account at any of available [hosting provider](https://jelastic.cloud/).
