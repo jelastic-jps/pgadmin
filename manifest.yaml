@@ -25,12 +25,21 @@ nodes:
     PGADMIN_DEFAULT_EMAIL: ${globals.email}
     PGADMIN_DEFAULT_PASSWORD: ${globals.password}
     PGADMIN_LISTEN_PORT: 8080
+    JELASTIC_EXPOSE: 8080
+  startService: false
+
     
 onInstall:
   - cmd[cp]: 
       mkdir /home/pgadmin; 
       chown pgadmin:pgadmin -R /home/pgadmin;
-  - restartContainer:
-      nodeGroup: cp
+      rm -f /usr/bin/launcher;
+      grep -qE '^\s*PubkeyAuthentication\s*yes' /etc/ssh/sshd_config || sed -i '/^Match/iPubkeyAuthentication yes' /etc/ssh/sshd_config;
+      grep -qE '^\s*HostKeyAlgorithms\s*ssh-rsa,ssh-dss' /etc/ssh/sshd_config || sed -i '/^Match/iHostKeyAlgorithms ssh-rsa,ssh-dss' /etc/ssh/sshd_config;
+      grep -qE '^\s*PubkeyAcceptedKeyTypes\s*ssh-rsa,ssh-dss' /etc/ssh/sshd_config || sed -i '/^Match/iPubkeyAcceptedKeyTypes ssh-rsa,ssh-dss' /etc/ssh/sshd_config;
+      /etc/init.d/devfs restart;
+      /etc/init.d/sshd restart
+  - api: env.control.ExecDockerRunCmd
+    nodeId: ${nodes.cp.master.id}
 
 success: /texts/success.md
