@@ -17,6 +17,8 @@ description:
   text: /texts/description.md
   short: pgAdmin is a top management tool for PostgreSQL here utilized as web application.
 
+ssl: true
+
 nodes:
 - cloudlets: 16
   nodeGroup: cp
@@ -28,15 +30,14 @@ nodes:
     JELASTIC_EXPOSE: 8080
   startService: false
 
-    
 onInstall:
   - cmd[cp]: 
-      mkdir /home/pgadmin; 
-      chown pgadmin:pgadmin -R /home/pgadmin;
-      rm -f /usr/bin/launcher;
+      mkdir /home/pgadmin;
+      getent group pgadmin >/dev/null || groupadd pgadmin;
+      chown -R pgadmin:pgadmin /home/pgadmin;
       grep -qE '^\s*PubkeyAuthentication\s*yes' /etc/ssh/sshd_config || sed -i '/^Match/iPubkeyAuthentication yes' /etc/ssh/sshd_config;
-      grep -qE '^\s*HostKeyAlgorithms\s*ssh-rsa,ssh-dss' /etc/ssh/sshd_config || sed -i '/^Match/iHostKeyAlgorithms ssh-rsa,ssh-dss' /etc/ssh/sshd_config;
-      grep -qE '^\s*PubkeyAcceptedKeyTypes\s*ssh-rsa,ssh-dss' /etc/ssh/sshd_config || sed -i '/^Match/iPubkeyAcceptedKeyTypes ssh-rsa,ssh-dss' /etc/ssh/sshd_config;
+      grep -qE '^\s*HostKeyAlgorithms\s*ssh-rsa' /etc/ssh/sshd_config || sed -i '/^Match/iHostKeyAlgorithms ssh-rsa' /etc/ssh/sshd_config;
+      grep -qE '^\s*PubkeyAcceptedKeyTypes\s*ssh-rsa' /etc/ssh/sshd_config || sed -i '/^Match/iPubkeyAcceptedKeyTypes ssh-rsa' /etc/ssh/sshd_config;
       /etc/init.d/devfs restart;
       /etc/init.d/sshd restart
   - api: env.control.ExecDockerRunCmd
