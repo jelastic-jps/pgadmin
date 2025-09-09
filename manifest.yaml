@@ -4,7 +4,7 @@ id: pgadmin4
 name: pgAdmin4
 baseUrl: https://raw.githubusercontent.com/jelastic-jps/pgadmin/master
 logo: /images/pgadmin-small.png
-homepage: https://https://www.pgadmin.org/
+homepage: https://www.pgadmin.org/
 
 categories:
 - apps/dev-and-admin-tools
